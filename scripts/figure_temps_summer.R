@@ -3,6 +3,7 @@
 library("tidyverse")
 library("lubridate")
 library("dataRetrieval")
+library("RColorBrewer")
 
 # Helpful example for downloading USGS data using dataRetrieval package: https://owi.usgs.gov/R/dataRetrieval.html#11 and 
 #                                                                        https://cran.r-project.org/web/packages/dataRetrieval/vignettes/dataRetrieval.html
@@ -33,23 +34,35 @@ lc <-
   # Drop tz column
   select(-tz_cd)
 
-# Graph daily temp means for April-Aug for each year
-test2 <- lc %>% 
+# Convert all dates to same year to be able to plot them all together with nice date formats on x-axis
+same_year <- function(x) {
+  year(x) <- 2000
+  x
+}
+  
+# Plot
+lc %>% 
   # Calculate daily temp means
   mutate(date = date(timestamp)) %>% 
   group_by(date) %>% 
   summarize(temp_dailyMean = mean(Wtemp_Inst, na.rm = T)) %>% 
-  mutate(date = ymd(date))
-  # Add a year column
-  mutate(year = year(date)) %>% 
-  # Add a day of the year column
-  mutate(yday = yday(date)) %>% 
+  # Convert temp from deg. C to F
+  mutate(temp_dailyMean_F = temp_dailyMean/5*9+32) %>% 
+  # Add year and month columns
+  mutate(year = year(date),
+         month = month(date)) %>% 
   # Select months to keep
-  select(month(year) %in% c(4, 5, 7, 8)) %>% 
+  filter(month %in% c(4, 5, 6)) %>% 
   # Plot
-  ggplot(aes(x = yday, y = temp_mean, group = year)) +
+  ggplot(aes(x = same_year(date), y = temp_dailyMean_F, color = factor(year))) +
   geom_line() +
-  theme_classic()
-  
-  
+  scale_color_brewer(name = "Year",
+                     palette = "Accent") +
+  # scale_color_discrete()
+  ylab(expression(Water~temp.~(degree*F))) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        legend.position = c(0.1, 0.8))
+
+ggsave("plots/temps.png", height = 5, width = 5, units = "in", dpi = 150)
 
