@@ -1,3 +1,4 @@
+# Download USGS data for Lake Champlain in Burlington & plot annual temperature time series
 
 # Load packages
 library("tidyverse")
