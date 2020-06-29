@@ -13,7 +13,7 @@ library("RColorBrewer")
 siteNo <- "04294500"
 pCodes <- c("00010", "62614", "00095")
 start.date <- "2014-10-01"
-end.date <- "2020-06-22"
+end.date <- "2020-06-28"
 
 # Retrieve data as specified above
 lc <- readNWISuv(siteNumbers = siteNo,
