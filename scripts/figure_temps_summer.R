@@ -13,7 +13,8 @@ library("RColorBrewer")
 siteNo <- "04294500"
 pCodes <- c("00010", "62614", "00095")
 start.date <- "2014-10-01"
-end.date <- "2020-06-28"
+end.date <- today()
+
 
 # Retrieve data as specified above
 lc <- readNWISuv(siteNumbers = siteNo,
@@ -53,7 +54,7 @@ lc %>%
   mutate(year = year(date),
          month = month(date)) %>% 
   # Select months to keep
-  filter(month %in% c(4, 5, 6)) %>% 
+  filter(month %in% c(4, 5, 6, 7)) %>% 
   # Plot
   ggplot(aes(x = same_year(date), y = temp_dailyMean_F, color = factor(year))) +
   geom_line() +
