@@ -61,7 +61,7 @@ lc %>%
   scale_color_brewer(name = "Year",
                      palette = "Accent") +
   # scale_color_discrete()
-  ylab(expression(Water~temp.~(degree*F))) +
+  ylab(expression(Water~temp.~at~88~ft.~(degree*F))) +
   theme_classic() +
   theme(axis.title.x = element_blank(),
         legend.position = c(0.1, 0.8))
