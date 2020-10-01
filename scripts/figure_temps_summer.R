@@ -54,7 +54,7 @@ lc %>%
   mutate(year = year(date),
          month = month(date)) %>% 
   # Select months to keep
-  filter(month %in% c(4, 5, 6, 7, 8)) %>% 
+  filter(month %in% c(4, 5, 6, 7, 8, 9, 10)) %>% 
   # Plot
   ggplot(aes(x = same_year(date), y = temp_dailyMean_F, color = factor(year))) +
   geom_line() +
